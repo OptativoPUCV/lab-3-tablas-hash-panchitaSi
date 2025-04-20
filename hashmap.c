@@ -71,36 +71,38 @@ void enlarge(HashMap * map) {
     //"Asigne a map->buckets un nuevo arreglo con la nueva capacidad."
     map->buckets = (Pair**)calloc(map->capacity,sizeof(Pair*));
     map->size = 0;
-
+    //volvemos a insertar los datos
     for (size_t k = 0; k < capacidadAnterior ; k++){
         if (old_buckets[k] != NULL && old_buckets[k]->key != NULL){
             insertMap(map,old_buckets[k]->key,old_buckets[k]->value);
         }
     }
-    free(old_buckets);
+    free(old_buckets); //liberar el auxiliar
 }
 
 
 HashMap * createMap(long capacity) {
+    //reservamos memoria del mapa
     HashMap *map = (HashMap*) malloc(sizeof(HashMap));
     if (map == NULL) return NULL;
-
+    //con esta funcion reservamos memoria e inicializamos de inmediato
     map->buckets = (Pair**) calloc(capacity, sizeof(Pair*));
     if (map->buckets == NULL) {
         free(map);
         return NULL;
     }
-
+    //inicializar el resto de elementos en el mapa
     map->size = 0;
     map->current = -1;
     map->capacity = capacity;
     return map;
 }
 
+//funcion para eliminar un elemento del mapa
 void eraseMap(HashMap * map,  char * key) {
-    long posicion = hash(key,map->capacity);
+    long posicion = hash(key,map->capacity); //sacamos la posicion correspondiente
     long i = posicion;
-
+//si la posicion es válida, se procede a eliminar, sino avanza la posicion
     while(map->buckets[posicion] != NULL){
         if (map->buckets[posicion]->key != NULL && strcmp(map->buckets[posicion]->key, key) == 0){
             map->buckets[posicion]->key = NULL;
@@ -112,10 +114,11 @@ void eraseMap(HashMap * map,  char * key) {
     }
 }
 
+//retorna el pair asociado a la key asignada.
 Pair * searchMap(HashMap * map,  char * key) {   
-    long posicion = hash(key,map->capacity);
+    long posicion = hash(key,map->capacity); //obtener la posicion
     long i = posicion;
-
+//revisar si las claves/keys coinciden y de ser asi retornar y asignar el nuevo current
     while (map->buckets[posicion] != NULL) {
         if (map->buckets[posicion]->key != NULL && strcmp(map->buckets[posicion]->key, key) == 0) {
             map->current = posicion;
@@ -129,6 +132,7 @@ Pair * searchMap(HashMap * map,  char * key) {
     return NULL;
 }
 
+//retorna el primer elemento del mapa
 Pair * firstMap(HashMap * map) {
     for (long posi = 0; posi < map->capacity ; posi++){
         if (map->buckets[posi] != NULL && map->buckets[posi]->key != NULL){
@@ -139,9 +143,8 @@ Pair * firstMap(HashMap * map) {
     return NULL;
 }
 
+//retorna el siguiente Pair del arreglo buckets a partir índice current.
 Pair * nextMap(HashMap * map) {
-    
-
     for (long posicion = (map->current + 1);posicion < map->capacity;posicion++){
         if (map->buckets[posicion] != NULL){
             map->current = posicion;
