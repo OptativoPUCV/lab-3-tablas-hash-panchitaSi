@@ -19,3 +19,14 @@ Sun, Apr 20, 2025  4:15:52 PM:
  tests:  16|1
 total_score: 60/70
 b642400
+Sun, Apr 20, 2025  5:14:16 PM: 
+ hashmap.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+Compilation failed
+In file included from test.c:4:0:
+hashmap.c: In function 'enlarge':
+hashmap.c:67:10: error: unused variable 'capacidadAnterior' [-Werror=unused-variable]
+     long capacidadAnterior = map->capacity; //la anterior capacidad
+          ^~~~~~~~~~~~~~~~~
+cc1.exe: all warnings being treated as errors
+d6b13eb
